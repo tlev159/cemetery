@@ -16,6 +16,7 @@ public class Grave {
     private Long id;
 
     @Column(name = "name", length = 3, nullable = false)
+    @OrderBy
     private String name;
 
     @Column(name = "grave_row", length = 3)
