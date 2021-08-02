@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "grave")
+@Entity
 @Table(name = "graves")
 public class Grave {
 
@@ -15,6 +15,7 @@ public class Grave {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", length = 3, nullable = false)
     private String name;
 
     @Column(name = "grave_row", length = 3)
