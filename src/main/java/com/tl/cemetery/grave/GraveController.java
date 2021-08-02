@@ -36,18 +36,18 @@ public class GraveController {
         return service.listAllGraves();
     }
 
-    @GetMapping("/parcel")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @Tag(name = "list all graves in parcel - optional for the row")
-    public List<GraveDTO> listAllGravesInAParcel(@RequestParam String name, Optional<Integer> row) {
-        return service.listAllGravesInAParcel(name, row);
-    }
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @Tag(name = "find grave by id")
     public GraveDTO findGraveById(@PathVariable("id") Long id) {
         return service.findGraveById(id);
+    }
+
+    @GetMapping("/parcel")
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @Tag(name = "list all graves in parcel - optional for the row")
+    public List<GraveDTO> listAllGravesInAParcel(@RequestParam String name, Optional<Integer> row) {
+        return service.listAllGravesInAParcel(name, row);
     }
 
     @DeleteMapping("/{id}")
