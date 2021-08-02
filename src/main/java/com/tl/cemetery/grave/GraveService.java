@@ -37,4 +37,9 @@ public class GraveService {
     public void deleteAllFromGraves() {
         repository.deleteAll();
     }
+
+    public void deleteGraveById(Long id) {
+        repository.deleteById(id);
+    }
+
 }

@@ -36,13 +36,20 @@ public class GraveController {
     }
 
     @GetMapping("/{id}")
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @Tag(name = "find grave by id")
     public GraveDTO findGraveById(@PathVariable("id") Long id) {
         return service.findGraveById(id);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteGraveById(@PathVariable("id") Long id) {
+        service.deleteGraveById(id);
+    }
+
     @DeleteMapping
+    @Tag(name = "delete all records from the table")
     public void deleteAllFromGraves() {
         service.deleteAllFromGraves();
     }
