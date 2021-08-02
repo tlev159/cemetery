@@ -31,4 +31,8 @@ public class GraveService {
         Grave grave = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Grave not found!"));
         return modelMapper.map(grave, GraveDTO.class);
     }
+
+    public void deleteAllFromGraves() {
+        repository.deleteAll();
+    }
 }
