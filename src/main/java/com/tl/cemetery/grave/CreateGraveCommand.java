@@ -22,11 +22,11 @@ public class CreateGraveCommand {
     @Schema(description = "add name to grave", example = "D")
     private String name;
 
-    @NotEmpty
+    @NotNull
     @Schema(description = "add row number to grave", example = "3")
     private int row;
 
-    @NotEmpty
+    @NotNull
     @Schema(description = "add column number to grave", example = "2")
     private int column;
 
