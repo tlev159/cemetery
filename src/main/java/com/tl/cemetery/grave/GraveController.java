@@ -36,7 +36,7 @@ public class GraveController {
         return service.listAllGraves();
     }
 
-    @GetMapping("/parcell")
+    @GetMapping("/parcel")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @Tag(name = "list all graves in parcel - optional for the row")
     public List<GraveDTO> listAllGravesInAParcel(@RequestParam String name, Optional<Integer> row) {
@@ -61,7 +61,6 @@ public class GraveController {
     public void deleteAllFromGraves() {
         service.deleteAllFromGraves();
     }
-
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Problem> handleNotFound(IllegalArgumentException iae) {
