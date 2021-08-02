@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -25,6 +26,13 @@ public class GraveService {
 
     public List<GraveDTO> listAllGraves() {
         return repository.findAll().stream()
+                .map(g -> modelMapper.map(g, GraveDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<GraveDTO> listAllGravesInAParcel(String name, Optional<Integer> row) {
+        return repository.findAllGravesInParcel(name).stream()
+                .filter(g -> row.isPresent() || g.getRow() == row.get())
                 .map(g -> modelMapper.map(g, GraveDTO.class))
                 .collect(Collectors.toList());
     }

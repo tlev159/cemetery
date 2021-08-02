@@ -12,6 +12,7 @@ import org.zalando.problem.Status;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -33,6 +34,13 @@ public class GraveController {
     @Tag(name = "list all graves")
     public List<GraveDTO> listAllGraves() {
         return service.listAllGraves();
+    }
+
+    @GetMapping("/parcell")
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @Tag(name = "list all graves in parcel - optional for the row")
+    public List<GraveDTO> listAllGravesInAParcel(@RequestParam String name, Optional<Integer> row) {
+        return service.listAllGravesInAParcel(name, row);
     }
 
     @GetMapping("/{id}")
