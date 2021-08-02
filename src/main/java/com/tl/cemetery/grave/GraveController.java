@@ -35,8 +35,8 @@ public class GraveController {
         return service.listAllGraves();
     }
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @GetMapping("/graves/{id}")
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
     @Tag(name = "find grave by id")
     public GraveDTO findGraveById(@PathVariable("id") Long id) {
         return service.findGraveById(id);
