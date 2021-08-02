@@ -2,6 +2,7 @@ package com.tl.cemetery;
 
 import com.tl.cemetery.grave.CreateGraveCommand;
 import com.tl.cemetery.grave.GraveDTO;
+import com.tl.cemetery.grave.UpdateGraveCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 
+import java.net.URI;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GraveRestTemplateIT {
@@ -41,6 +46,23 @@ public class GraveRestTemplateIT {
         assertThat(loadedGrave)
                 .extracting(GraveDTO::getName)
                 .isEqualTo("B");
+    }
+
+    @Test
+    void createThenUpdateAndFindGraveById() {
+
+        GraveDTO graveDTO =
+                template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 2, 4), GraveDTO.class);
+
+        Long id = graveDTO.getId();
+
+        template.put(URL_FOR_QUERY + "/" + id, new UpdateGraveCommand("C", 3, 5));
+
+        GraveDTO loadedGrave =
+                template.getForObject(URL_FOR_QUERY + "/" + id, GraveDTO.class);
+
+        assertThat(loadedGrave)
+                .isEqualTo(new GraveDTO(id, "C", 3, 5));
     }
 
     @Test
@@ -110,4 +132,6 @@ public class GraveRestTemplateIT {
                 .extracting(GraveDTO::getName)
                 .containsExactly("A");
     }
+
+
 }
