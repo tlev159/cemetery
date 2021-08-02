@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface GraveRepository extends JpaRepository<Grave, Long> {
 
-    @Query(value = "select g from Grave g where g.name = :name")
+    @Query(value = "select g from Grave g where g.name like :name")
     List<Grave> findAllGravesInParcel(@Param("name") String name);
 
 }
