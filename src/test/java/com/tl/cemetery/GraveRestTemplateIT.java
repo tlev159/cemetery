@@ -149,5 +149,13 @@ public class GraveRestTemplateIT {
         assertEquals(Status.BAD_REQUEST, result.getStatus());
     }
 
+    @Test
+    void NotFoundGraveException4xx() {
 
+        Problem result = template.getForObject(URL_FOR_QUERY +"/999", Problem.class);
+
+        assertEquals(Status.NOT_FOUND, result.getStatus());
+        assertEquals(URI.create("grave/grave-not-found"), result.getType());
+
+    }
 }
