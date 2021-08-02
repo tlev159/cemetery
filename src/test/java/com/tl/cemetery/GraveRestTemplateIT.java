@@ -133,5 +133,13 @@ public class GraveRestTemplateIT {
                 .containsExactly("A");
     }
 
+    @Test
+    void createWithEmptyName() {
+        Problem result = template.postForObject(URL_FOR_QUERY,
+                new CreateGraveCommand("", 2, 4), Problem.class);
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+    }
+
 
 }
