@@ -5,8 +5,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -20,14 +23,19 @@ public class CreateGraveCommand {
     @NotEmpty
     @NotNull
     @Schema(description = "add name to grave", example = "D")
+    @Column(length = 3)
     private String name;
 
     @NotNull
     @Schema(description = "add row number to grave", example = "3")
+    @Min(1)
+    @Max(999)
     private int row;
 
     @NotNull
     @Schema(description = "add column number to grave", example = "2")
+    @Min(1)
+    @Max(999)
     private int column;
 
 }

@@ -1,8 +1,11 @@
 package com.tl.cemetery.grave;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Data
 @AllArgsConstructor
@@ -20,9 +23,13 @@ public class Grave {
     private String name;
 
     @Column(name = "grave_row", length = 3)
+    @Min(1)
+    @Max(999)
     private int row;
 
     @Column(name = "grave_column", length = 3)
+    @Min(1)
+    @Max(999)
     private int column;
 
     public Grave(String name, int row, int column) {
