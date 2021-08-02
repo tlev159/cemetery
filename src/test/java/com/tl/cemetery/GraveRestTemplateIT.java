@@ -63,4 +63,29 @@ public class GraveRestTemplateIT {
                 .containsExactly("B");
     }
 
+    @Test
+    void createMoreGraveAndListAllInAGivenParcel() {
+
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 13, 15), GraveDTO.class);
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("A", 5, 4), GraveDTO.class);
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 7, 4), GraveDTO.class);
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("C", 7, 4), GraveDTO.class);
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 1, 4), GraveDTO.class);
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("D", 11, 4), GraveDTO.class);
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 13, 2), GraveDTO.class);
+
+        List<GraveDTO> loadedGraveDTOs =
+                template.exchange(URL_FOR_QUERY + "/parcel?name=B",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<GraveDTO>>() {
+                        }).getBody();
+
+        assertThat(loadedGraveDTOs)
+                .hasSize(4)
+                .extracting(GraveDTO::getRow)
+                .containsExactly(1, 7, 13, 13);
+    }
+
+
 }
