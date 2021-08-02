@@ -27,4 +27,9 @@ public class GraveService {
                 .map(g -> modelMapper.map(g, GraveDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public GraveDTO findGraveById(Long id) {
+        Grave grave = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Grave not found!"));
+        return modelMapper.map(grave, GraveDTO.class);
+    }
 }
