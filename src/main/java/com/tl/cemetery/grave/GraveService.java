@@ -18,7 +18,8 @@ public class GraveService {
 
     public GraveDTO createGrave(CreateGraveCommand command) {
         Grave graveTemplate = new Grave(command.getName(), command.getRow(), command.getColumn());
-        if (!repository.findAll().stream().filter(g -> g.getName().equalsIgnoreCase(graveTemplate.getName()) && g.getRow() == graveTemplate.getRow() && g.getColumn() == graveTemplate.getColumn()).findFirst().isPresent()) {
+        if (repository.findAll().stream().noneMatch(g -> g.getName().equalsIgnoreCase(graveTemplate.getName())
+                && g.getRow() == graveTemplate.getRow() && g.getColumn() == graveTemplate.getColumn())) {
             repository.save(graveTemplate);
         }
         return modelMapper.map(graveTemplate, GraveDTO.class);
@@ -32,7 +33,7 @@ public class GraveService {
 
     public List<GraveDTO> listAllGravesInAParcel(String name, Optional<Integer> row) {
         return repository.findAllGravesInParcel(name).stream()
-                .filter(g -> row.isPresent() || g.getRow() == row.get())
+                .filter(g -> row.isEmpty() || g.getRow() == row.get())
                 .map(g -> modelMapper.map(g, GraveDTO.class))
                 .collect(Collectors.toList());
     }
@@ -43,6 +44,7 @@ public class GraveService {
     }
 
     public void deleteAllFromGraves() {
+
         repository.deleteAll();
     }
 
