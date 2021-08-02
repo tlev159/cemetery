@@ -87,5 +87,28 @@ public class GraveRestTemplateIT {
                 .containsExactly(1, 7, 13, 13);
     }
 
+    @Test
+    void createTwoGraveThenDeleteById() {
 
+        GraveDTO graveDTO =
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 13, 15), GraveDTO.class);
+
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("A", 5, 4), GraveDTO.class);
+
+        Long id = graveDTO.getId();
+
+        template.delete(URL_FOR_QUERY + "/" + id);
+
+        List<GraveDTO> loadedGraveDTOs =
+                template.exchange(URL_FOR_QUERY,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<GraveDTO>>() {
+                        }).getBody();
+
+        assertThat(loadedGraveDTOs)
+                .hasSize(1)
+                .extracting(GraveDTO::getName)
+                .containsExactly("A");
+    }
 }
