@@ -1,0 +1,14 @@
+POST http://localhost:8080/api/graves
+Content-Type: application/json
+
+{
+  "name": "N",
+  "row": 12,
+  "column": 2
+}
+
+###
+GET http://localhost:8080/api/graves/1
+Accept: application/json
+
+###
