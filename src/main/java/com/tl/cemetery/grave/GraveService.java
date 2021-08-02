@@ -16,9 +16,11 @@ public class GraveService {
     private GraveRepository repository;
 
     public GraveDTO createGrave(CreateGraveCommand command) {
-        Grave grave = new Grave(command.getName(), command.getRow(), command.getColumn());
-        repository.save(grave);
-        return modelMapper.map(grave, GraveDTO.class);
+        Grave graveTemplate = new Grave(command.getName(), command.getRow(), command.getColumn());
+        if (!repository.findAll().stream().filter(g -> g.getName().equalsIgnoreCase(graveTemplate.getName()) && g.getRow() == graveTemplate.getRow() && g.getColumn() == graveTemplate.getColumn()).findFirst().isPresent()) {
+            repository.save(graveTemplate);
+        }
+        return modelMapper.map(graveTemplate, GraveDTO.class);
     }
 
     public List<GraveDTO> listAllGraves() {
