@@ -1,3 +1,4 @@
+### create grave post
 POST http://localhost:8080/api/graves
 Content-Type: application/json
 
@@ -7,7 +8,17 @@ Content-Type: application/json
   "column": 2
 }
 
-###
+### create grave with the same implementation to proof that it will not saved into the database
+POST http://localhost:8080/api/graves
+Content-Type: application/json
+
+{
+  "name": "N",
+  "row": 12,
+  "column": 2
+}
+
+### find grave by id
 GET http://localhost:8080/api/graves/1
 Accept: application/json
 
