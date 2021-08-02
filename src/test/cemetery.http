@@ -22,6 +22,10 @@ Content-Type: application/json
 GET http://localhost:8080/api/graves/1
 Accept: application/json
 
+### list all graves
+GET http://localhost:8080/api/graves
+Accept: application/json
+
 ### select graves in a parcel with the given name
 GET http://localhost:8080/api/graves/parcel?name=N
 Accept: application/json
@@ -29,3 +33,26 @@ Accept: application/json
 ### select graves in a parcel with the given name and in the given row
 GET http://localhost:8080/api/graves/parcel?name=N&row=12
 Accept: application/json
+
+###
+DELETE http://localhost:8080/api/graves/1
+
+### update grave
+PUT http://localhost:8080/api/graves/3
+Content-Type: application/json
+
+{
+  "name": "Q",
+  "row": 66,
+  "column": 99
+}
+
+### update grave with more than 3 digits in the row
+PUT http://localhost:8080/api/graves/3
+Content-Type: application/json
+
+{
+  "name": "T6g",
+  "row": 1235,
+  "column": 999
+}
