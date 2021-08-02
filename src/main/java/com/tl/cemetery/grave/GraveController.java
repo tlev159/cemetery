@@ -29,6 +29,11 @@ public class GraveController {
         return service.createGrave(command);
     }
 
+    @PutMapping("/{id}")
+    public GraveDTO updateGrave(@PathVariable("id") Long id, @RequestBody UpdateGraveCommand command) {
+        return service.updateGrave(id, command);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @Tag(name = "list all graves")
