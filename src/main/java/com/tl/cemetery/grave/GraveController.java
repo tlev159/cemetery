@@ -30,7 +30,8 @@ public class GraveController {
     }
 
     @PutMapping("/{id}")
-    public GraveDTO updateGrave(@PathVariable("id") Long id, @RequestBody UpdateGraveCommand command) {
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public GraveDTO updateGrave(@PathVariable("id") Long id, @Valid @RequestBody UpdateGraveCommand command) {
         return service.updateGrave(id, command);
     }
 
