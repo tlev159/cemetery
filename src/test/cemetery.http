@@ -22,4 +22,10 @@ Content-Type: application/json
 GET http://localhost:8080/api/graves/1
 Accept: application/json
 
-###
+### select graves in a parcel with the given name
+GET http://localhost:8080/api/graves/parcel?name=N
+Accept: application/json
+
+### select graves in a parcel with the given name and in the given row
+GET http://localhost:8080/api/graves/parcel?name=N&row=12
+Accept: application/json
