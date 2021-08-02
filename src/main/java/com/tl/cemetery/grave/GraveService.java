@@ -15,7 +15,6 @@ public class GraveService {
 
     private GraveRepository repository;
 
-
     public GraveDTO createGrave(CreateGraveCommand command) {
         Grave grave = new Grave(command.getName(), command.getRow(), command.getColumn());
         repository.save(grave);
