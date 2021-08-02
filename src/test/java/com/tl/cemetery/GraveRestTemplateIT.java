@@ -141,5 +141,13 @@ public class GraveRestTemplateIT {
         assertEquals(Status.BAD_REQUEST, result.getStatus());
     }
 
+    @Test
+    void createWithMoreAsThreeDigits() {
+        Problem result = template.postForObject(URL_FOR_QUERY,
+                new CreateGraveCommand("F", 2321, 4), Problem.class);
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+    }
+
 
 }
