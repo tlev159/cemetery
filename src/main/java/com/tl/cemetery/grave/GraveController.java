@@ -15,13 +15,13 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/graves")
 @Tag(name = "Operations on Graves")
 public class GraveController {
 
     private GraveService service;
 
-    @PostMapping("/graves")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     @Tag(name = "create new grave")
     public GraveDTO createGrave(@Valid @RequestBody CreateGraveCommand command) {
@@ -35,12 +35,18 @@ public class GraveController {
         return service.listAllGraves();
     }
 
-    @GetMapping("/graves/{id}")
+    @GetMapping("/{id}")
 //    @ResponseStatus(HttpStatus.NOT_FOUND)
     @Tag(name = "find grave by id")
     public GraveDTO findGraveById(@PathVariable("id") Long id) {
         return service.findGraveById(id);
     }
+
+    @DeleteMapping
+    public void deleteAllFromGraves() {
+        service.deleteAllFromGraves();
+    }
+
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Problem> handleNotFound(IllegalArgumentException iae) {
