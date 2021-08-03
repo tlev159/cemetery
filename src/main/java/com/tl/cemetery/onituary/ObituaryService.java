@@ -30,6 +30,9 @@ public class ObituaryService {
         return modelMapper.map(obituaryTemplate, ObituaryDTO.class);
     }
 
+    public ObituaryDTO findObituaryById(Long id) {
+        return modelMapper.map(repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Obituary not found!")), ObituaryDTO.class);
+    }
 
 
 }
