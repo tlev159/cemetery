@@ -22,5 +22,9 @@ public class ObituaryController {
         return service.findObituaryById(id);
     }
 
+    @DeleteMapping
+    public void deleteAllObituaries() {
+        service.deleteAllObituaries();
+    }
 
 }

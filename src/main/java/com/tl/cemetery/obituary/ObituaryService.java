@@ -19,12 +19,12 @@ public class ObituaryService {
     @Transactional
     public ObituaryDTO createObituary(CreateObituaryCommand command) {
         Obituary obituaryTemplate = new Obituary(command);
-        Grave graveTemplate = graveRepository.findById(command.getGrave().getId()).orElseThrow(() -> new IllegalArgumentException("Grave not found"));
+        Grave graveTemplate = graveRepository.findById(command.getGraveId()).orElseThrow(() -> new IllegalArgumentException("Grave not found"));
         if (repository.findAll().stream().noneMatch(o -> o.getName().equalsIgnoreCase(command.getName())
             && o.getNameOfMother().equalsIgnoreCase(command.getNameOfMother())
             && o.getDateOfBirth().equals(command.getDateOfBirth()))) {
             repository.save(obituaryTemplate);
-
+            obituaryTemplate.setGrave(graveTemplate);
         }
         graveTemplate.addObituary(obituaryTemplate);
         return modelMapper.map(obituaryTemplate, ObituaryDTO.class);
@@ -35,4 +35,7 @@ public class ObituaryService {
     }
 
 
+    public void deleteAllObituaries() {
+        repository.deleteAll();
+    }
 }
