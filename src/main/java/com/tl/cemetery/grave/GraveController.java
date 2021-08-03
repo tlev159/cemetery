@@ -1,6 +1,7 @@
 package com.tl.cemetery.grave;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,48 +26,51 @@ public class GraveController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    @Tag(name = "create new grave")
+    @Operation(summary = "Create new grave", description = "Create new grave")
     public GraveDTO createGrave(@Valid @RequestBody CreateGraveCommand command) {
         return service.createGrave(command);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @Tag(name = "update grave")
+    @Operation(summary = "Update grave", description = "Update grave")
     public GraveDTO updateGrave(@PathVariable("id") Long id, @Valid @RequestBody UpdateGraveCommand command) {
         return service.updateGrave(id, command);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @Tag(name = "list all graves")
+    @Operation(summary = "List all graves", description = "List all graves")
+    @ApiResponse(responseCode = "404", description = "No one graves found")
     public List<GraveDTO> listAllGraves() {
         return service.listAllGraves();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @Tag(name = "find grave by id")
+    @Operation(summary = "Find grave by id", description = "Find grave by id")
+    @ApiResponse(responseCode = "404", description = "Grave with id not found")
     public GraveDTO findGraveById(@PathVariable("id") Long id) {
         return service.findGraveById(id);
     }
 
     @GetMapping("/parcel")
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @Tag(name = "list all graves in parcel - optional for the row")
+    @Operation(summary = "list all graves in parcel - optional for the row", description = "list all graves in parcel - optional for the row")
+    @ApiResponse(responseCode = "404", description = "No one grave was found")
     public List<GraveDTO> listAllGravesInAParcel(@RequestParam String name, Optional<Integer> row) {
         return service.listAllGravesInAParcel(name, row);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Tag(name = "delete grave by id")
+    @Operation(summary = "delete grave by id", description = "delete grave by id")
     public void deleteGraveById(@PathVariable("id") Long id) {
         service.deleteGraveById(id);
     }
 
     @DeleteMapping
-    @Tag(name = "delete all records from the table")
+    @Operation(summary = "delete all records from the table", description = "delete all records from the table")
     public void deleteAllFromGraves() {
         service.deleteAllFromGraves();
     }

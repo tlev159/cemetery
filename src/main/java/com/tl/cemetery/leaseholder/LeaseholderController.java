@@ -1,5 +1,6 @@
 package com.tl.cemetery.leaseholder;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -24,31 +25,31 @@ public class LeaseholderController {
     private LeaseholderService service;
 
     @PostMapping
-    @Tag(name = "create new leaseholder")
+    @Operation(summary = "Create new leaseholder", description = "Create new leaseholder")
     private LeaseholderDTO createLeaseholder(@Valid @RequestBody CreateLeaseholderCommand command) {
         return service.createLeaseholder(command);
     }
 
     @GetMapping
-    @Tag(name = "list all leaseholder or optional only they with a given name")
+    @Operation(summary = "List all leaseholder or optional only they with a given name")
     public List<LeaseholderDTO> listAllLeaseholder(@RequestParam Optional<String> name) {
         return service.listAllLeaseholder(name);
     }
 
     @PutMapping("/{id}")
-    @Tag(name = "update leaseholder data")
+    @Operation(summary = "Update leaseholder data")
     public LeaseholderDTO updateLeaseholderById(@PathVariable("id") Long id, @Valid @RequestBody UpdateLeaseholderCommand command) {
         return service.updateLeaseholderById(id, command);
     }
 
     @DeleteMapping("/{id}")
-    @Tag(name = "delete leaseholder by id")
+    @Operation(summary = "Delete leaseholder by id")
     public void deleteLeaseholderById(@PathVariable("id") Long id) {
         service.deleteLeaseholderById(id);
     }
 
     @DeleteMapping
-    @Tag(name = "delete all leaseholder")
+    @Operation(summary= "Delete all leaseholder")
     public void deleteAllLeaseholder() {
         service.deleteAllLeaseholder();
     }
