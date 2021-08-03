@@ -26,7 +26,7 @@ public class LeaseholderController {
 
     @PostMapping
     @Operation(summary = "Create new leaseholder", description = "Create new leaseholder")
-    private LeaseholderDTO createLeaseholder(@Valid @RequestBody CreateLeaseholderCommand command) {
+    public LeaseholderDTO createLeaseholder(@Valid @RequestBody CreateLeaseholderCommand command) {
         return service.createLeaseholder(command);
     }
 
