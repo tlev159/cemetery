@@ -37,5 +37,5 @@ public class CreateObituaryCommand {
     @NotNull
     @NotEmpty
     @Schema(name = "add grave id", example = "3")
-    private Grave grave;
+    private Long graveId;
 }
