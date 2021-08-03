@@ -34,7 +34,7 @@ public class CreateLeaseholderCommand {
     private String telephone;
 
     @NotNull
-    @Schema(description = "add date for funeral", example = "2020-08-20")
+    @Schema(description = "add date for lease", example = "2020-08-20")
     private LocalDate leasedAt;
 
     @NotNull
