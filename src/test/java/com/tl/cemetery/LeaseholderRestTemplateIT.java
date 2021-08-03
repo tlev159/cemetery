@@ -204,4 +204,21 @@ public class LeaseholderRestTemplateIT {
         assertEquals(Status.BAD_REQUEST, result.getStatus());
     }
 
+    @Test
+    void createWithEmptyAddress() {
+
+        GraveDTO graveDTO1 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("B", 1, 4), GraveDTO.class);
+
+        Long id1 = graveDTO1.getId();
+
+        Problem result = template.postForObject(URL_FOR_LEASEHOLDERS,
+                new CreateLeaseholderCommand("Minta Ferenc",
+                        "", "+36-1/234-5678",
+                        LocalDate.of(2020, 3, 8),
+                        GraveType.STONE, id1), Problem.class);
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+    }
+
 }
