@@ -1,5 +1,6 @@
 package com.tl.cemetery.grave;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public class GraveController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
+    @Tag(name = "update grave")
     public GraveDTO updateGrave(@PathVariable("id") Long id, @Valid @RequestBody UpdateGraveCommand command) {
         return service.updateGrave(id, command);
     }
@@ -58,6 +60,7 @@ public class GraveController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Tag(name = "delete grave by id")
     public void deleteGraveById(@PathVariable("id") Long id) {
         service.deleteGraveById(id);
     }
