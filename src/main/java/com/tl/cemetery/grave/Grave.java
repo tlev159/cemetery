@@ -1,12 +1,15 @@
 package com.tl.cemetery.grave;
 
 import com.tl.cemetery.leaseholder.Leaseholder;
+import com.tl.cemetery.onituary.Obituary;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -36,6 +39,9 @@ public class Grave {
     @OneToOne(mappedBy = "grave")
     private Leaseholder leaseholder;
 
+    @OneToMany(mappedBy = "grave")
+    private List<Obituary> obituaries;
+
     public Grave(String name, int row, int column) {
         this.name = name;
         this.row = row;
@@ -47,6 +53,13 @@ public class Grave {
             leaseholder = lh;
         }
         leaseholder.setGrave(this);
+    }
+
+    public void addObituaries(Obituary obituary) {
+        if (obituaries == null) {
+            obituaries = new ArrayList<>();
+        }
+        obituaries.add(obituary);
     }
 }
 

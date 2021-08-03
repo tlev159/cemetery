@@ -28,6 +28,7 @@ public class Obituary {
     private LocalDate dateOfRIP;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "grave_id", nullable = false)
     private Grave grave;
 
     public Obituary(String name, String nameOfMother, LocalDate dateOfBirth, LocalDate dateOfRIP) {
