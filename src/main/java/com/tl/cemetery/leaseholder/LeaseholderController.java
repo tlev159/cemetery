@@ -26,4 +26,9 @@ public class LeaseholderController {
         return service.listAllLeaseholder(name);
     }
 
+    @PutMapping("/{id}")
+    public LeaseholderDTO updateLeaseholderById(@PathVariable("id") Long id, @Valid @RequestBody UpdateLeaseholderCommand command) {
+        return service.updateLeaseholderById(id, command);
+    }
+
 }
