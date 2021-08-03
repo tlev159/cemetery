@@ -56,7 +56,7 @@ public class GraveController {
 
     @GetMapping("/parcel")
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @Operation(summary = "list all graves in parcel - optional for the row", description = "list all graves in parcel - optional for the row")
+    @Operation(summary = "List all graves in parcel - optional for the row", description = "List all graves in parcel - optional for the row")
     @ApiResponse(responseCode = "404", description = "No one grave was found")
     public List<GraveDTO> listAllGravesInAParcel(@RequestParam String name, Optional<Integer> row) {
         return service.listAllGravesInAParcel(name, row);
@@ -64,13 +64,13 @@ public class GraveController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "delete grave by id", description = "delete grave by id")
+    @Operation(summary = "Delete grave by id", description = "Delete grave by id")
     public void deleteGraveById(@PathVariable("id") Long id) {
         service.deleteGraveById(id);
     }
 
     @DeleteMapping
-    @Operation(summary = "delete all records from the table", description = "delete all records from the table")
+    @Operation(summary = "Delete all records from the table", description = "Delete all records from the table")
     public void deleteAllFromGraves() {
         service.deleteAllFromGraves();
     }
