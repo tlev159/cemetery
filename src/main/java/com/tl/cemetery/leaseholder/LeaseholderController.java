@@ -37,6 +37,12 @@ public class LeaseholderController {
         return service.updateLeaseholderById(id, command);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteLeaseholderById(@PathVariable("id") Long id) {
+        service.deleteLeaseholderById(id);
+    }
+
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Problem> handleNotFound(IllegalArgumentException iae) {
         Problem problem = Problem.builder()

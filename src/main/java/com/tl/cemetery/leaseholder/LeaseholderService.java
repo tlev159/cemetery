@@ -64,5 +64,8 @@ public class LeaseholderService {
         leaseholderTemplate.setGrave(graveTemplate);
     }
 
+    public void deleteLeaseholderById(Long id) {
+        repository.deleteById(id);
+    }
 
 }
