@@ -104,12 +104,51 @@ public class LeaseholderRestTemplateIT {
                         new ParameterizedTypeReference<List<LeaseholderDTO>>() {
                         }).getBody();
 
-        System.out.println(loadedGraveDTOs);
-
         assertThat(loadedGraveDTOs)
                 .hasSize(4)
                 .extracting(LeaseholderDTO::getName)
                 .containsExactly("Minta Aladár", "Minta Balázs", "Minta Cecília", "Minta Dezső");
+    }
+
+    @Test
+    void createTwoDeleteOneAndListAll() {
+
+        GraveDTO graveDTO1 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("B", 1, 4), GraveDTO.class);
+        GraveDTO graveDTO2 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("A", 1, 4), GraveDTO.class);
+
+        Long id1 = graveDTO1.getId();
+        Long id2 = graveDTO2.getId();
+
+        template.postForObject(URL_FOR_LEASEHOLDERS,
+                new CreateLeaseholderCommand("Minta Aladár",
+                        "6543 Kalászpuszta, Kossuth u. 4.", "+36-1/234-5678",
+                        LocalDate.of(2020, 3, 8),
+                        GraveType.STONE, id1), LeaseholderDTO.class);
+
+        LeaseholderDTO loadedLeaseholderDTO =
+        template.postForObject(URL_FOR_LEASEHOLDERS,
+                new CreateLeaseholderCommand("Minta Balázs",
+                        "1357 Pusztaháza, Petőfi u. 4.", "+36-1/111-5678",
+                        LocalDate.of(2020, 3, 8),
+                        GraveType.STONE, id2), LeaseholderDTO.class);
+
+        Long id = loadedLeaseholderDTO.getId();
+
+        template.delete(URL_FOR_LEASEHOLDERS + "/" + id);
+
+        List<LeaseholderDTO> loadedGraveDTOs =
+                template.exchange(URL_FOR_LEASEHOLDERS,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<LeaseholderDTO>>() {
+                        }).getBody();
+
+        assertThat(loadedGraveDTOs)
+                .hasSize(1)
+                .extracting(LeaseholderDTO::getName)
+                .containsExactly("Minta Aladár");
     }
 
 }
