@@ -68,4 +68,7 @@ public class LeaseholderService {
         repository.deleteById(id);
     }
 
+    public void deleteAllLeaseholder() {
+        repository.deleteAll();
+    }
 }

@@ -42,6 +42,10 @@ public class LeaseholderController {
         service.deleteLeaseholderById(id);
     }
 
+    @DeleteMapping
+    public void deleteAllLeaseholder() {
+        service.deleteAllLeaseholder();
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Problem> handleNotFound(IllegalArgumentException iae) {
