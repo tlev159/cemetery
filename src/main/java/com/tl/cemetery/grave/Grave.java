@@ -1,5 +1,6 @@
 package com.tl.cemetery.grave;
 
+import com.tl.cemetery.leaseholder.Leaseholder;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -32,10 +33,20 @@ public class Grave {
     @Max(999)
     private int column;
 
+    @OneToOne(mappedBy = "grave")
+    private Leaseholder leaseholder;
+
     public Grave(String name, int row, int column) {
         this.name = name;
         this.row = row;
         this.column = column;
+    }
+
+    public void addLeaseholder(Leaseholder lh) {
+        if (leaseholder == null) {
+            leaseholder = lh;
+        }
+        leaseholder.setGrave(this);
     }
 }
 

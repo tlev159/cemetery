@@ -56,4 +56,10 @@ public class Leaseholder {
         this.type = command.getType();
     }
 
+    public void addGrave(Grave graveTemplate) {
+        if (grave == null) {
+            grave = graveTemplate;
+        }
+        grave.setLeaseholder(this);
+    }
 }
