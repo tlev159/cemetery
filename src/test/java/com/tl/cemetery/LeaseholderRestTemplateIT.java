@@ -221,4 +221,13 @@ public class LeaseholderRestTemplateIT {
         assertEquals(Status.BAD_REQUEST, result.getStatus());
     }
 
+    @Test
+    void NotFoundException() {
+
+        Problem result = template.getForObject(URL_FOR_LEASEHOLDERS + "/999", Problem.class);
+
+        assertEquals(Status.NOT_FOUND, result.getStatus());
+        assertEquals(URI.create("grave_or_leaseholder/grave-or-leaseholder-not-found"), result.getType());
+
+    }
 }
