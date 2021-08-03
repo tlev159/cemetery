@@ -48,5 +48,12 @@ public class Leaseholder {
         this.type = type;
     }
 
+    public Leaseholder(CreateLeaseholderCommand command) {
+        this.name = command.getName();
+        this.address = command.getAddress();
+        this.telephone = command.getTelephone();
+        this.leasedAt = command.getLeasedAt();
+        this.type = command.getType();
+    }
 
 }
