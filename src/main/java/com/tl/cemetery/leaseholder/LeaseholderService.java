@@ -42,15 +42,19 @@ public class LeaseholderService {
     public LeaseholderDTO updateLeaseholderById(Long id, UpdateLeaseholderCommand command) {
         Leaseholder leaseholderTemplate = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Leaseholder not found!"));
         Grave graveTemplate = graveRepository.findById(command.getGraveId()).orElseThrow(() -> new IllegalArgumentException("Grave not found!"));
+        setArgumentsForLeadeholder(command, leaseholderTemplate, graveTemplate);
+        graveTemplate.setLeaseholder(leaseholderTemplate);
+        repository.save(leaseholderTemplate);
+        return modelMapper.map(leaseholderTemplate, LeaseholderDTO.class);
+    }
+
+    private void setArgumentsForLeadeholder(UpdateLeaseholderCommand command, Leaseholder leaseholderTemplate, Grave graveTemplate) {
         leaseholderTemplate.setName(command.getName());
         leaseholderTemplate.setAddress(command.getAddress());
         leaseholderTemplate.setTelephone(command.getTelephone());
         leaseholderTemplate.setLeasedAt(command.getLeasedAt());
         leaseholderTemplate.setType(command.getType());
         leaseholderTemplate.setGrave(graveTemplate);
-        graveTemplate.setLeaseholder(leaseholderTemplate);
-        repository.save(leaseholderTemplate);
-        return modelMapper.map(leaseholderTemplate, LeaseholderDTO.class);
     }
 
 
