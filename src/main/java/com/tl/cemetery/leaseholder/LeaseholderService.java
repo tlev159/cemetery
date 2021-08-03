@@ -22,14 +22,14 @@ public class LeaseholderService {
 
     @Transactional
     public LeaseholderDTO createLeaseholder(CreateLeaseholderCommand command) {
-        Leaseholder leaseholderTemlpate = new Leaseholder(command);
+        Leaseholder leaseholderTemplate = new Leaseholder(command);
         Grave graveTemplate = graveRepository.findById(command.getGraveId()).orElseThrow(() -> new IllegalArgumentException("Grave with id(" + command.getGraveId() + ") not found!"));
-        if (repository.findAll().stream().noneMatch(l -> l.getName().equalsIgnoreCase(leaseholderTemlpate.getName())
-                && l.getAddress().equalsIgnoreCase(leaseholderTemlpate.getAddress()))) {
-            repository.save(leaseholderTemlpate);
+        if (repository.findAll().stream().noneMatch(l -> l.getName().equalsIgnoreCase(leaseholderTemplate.getName())
+                && l.getAddress().equalsIgnoreCase(leaseholderTemplate.getAddress()))) {
+            repository.save(leaseholderTemplate);
         }
-        leaseholderTemlpate.addGrave(graveTemplate);
-        return modelMapper.map(leaseholderTemlpate, LeaseholderDTO.class);
+        leaseholderTemplate.addGrave(graveTemplate);
+        return modelMapper.map(leaseholderTemplate, LeaseholderDTO.class);
     }
 
     public List<LeaseholderDTO> listAllLeaseholder(Optional<String> name) {
@@ -37,4 +37,6 @@ public class LeaseholderService {
                 .filter(l -> name.isEmpty() || l.getName().equalsIgnoreCase(name.get()))
                 .map(l -> modelMapper.map(l, LeaseholderDTO.class)).collect(Collectors.toList());
     }
+
+
 }
