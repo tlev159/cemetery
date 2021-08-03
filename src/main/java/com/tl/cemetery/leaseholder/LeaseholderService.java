@@ -64,18 +64,5 @@ public class LeaseholderService {
         leaseholderTemplate.setGrave(graveTemplate);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Problem> handleNotFound(IllegalArgumentException iae) {
-        Problem problem = Problem.builder()
-                .withType(URI.create("grave_or_leaseholder/grave-or-leaseholder-not-found"))
-                .withTitle("Grave/leaseholder not found")
-                .withStatus(Status.NOT_FOUND)
-                .withDetail(iae.getMessage())
-                .build();
 
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
-                .body(problem);
-    }
 }
