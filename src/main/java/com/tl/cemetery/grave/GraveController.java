@@ -43,6 +43,7 @@ public class GraveController {
     @Operation(summary = "List all graves", description = "List all graves")
     @ApiResponse(responseCode = "404", description = "No one graves found")
     public List<GraveDTO> listAllGraves() {
+
         return service.listAllGraves();
     }
 
@@ -51,6 +52,7 @@ public class GraveController {
     @Operation(summary = "Find grave by id", description = "Find grave by id")
     @ApiResponse(responseCode = "404", description = "Grave with id not found")
     public GraveDTO findGraveById(@PathVariable("id") Long id) {
+
         return service.findGraveById(id);
     }
 
@@ -66,12 +68,14 @@ public class GraveController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete grave by id", description = "Delete grave by id")
     public void deleteGraveById(@PathVariable("id") Long id) {
+
         service.deleteGraveById(id);
     }
 
     @DeleteMapping
     @Operation(summary = "Delete all records from the table", description = "Delete all records from the table")
     public void deleteAllFromGraves() {
+
         service.deleteAllFromGraves();
     }
 
