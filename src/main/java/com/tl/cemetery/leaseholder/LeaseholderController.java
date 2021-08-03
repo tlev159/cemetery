@@ -30,6 +30,12 @@ public class LeaseholderController {
         return service.createLeaseholder(command);
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Get leaseholder by id", description = "Get leaseholder by id")
+    public LeaseholderDTO findLeaseholderById(@PathVariable("id") Long id) {
+        return service.findLeaseholderById(id);
+    }
+
     @GetMapping
     @Operation(summary = "List all leaseholder or optional only they with a given name")
     public List<LeaseholderDTO> listAllLeaseholder(@RequestParam Optional<String> name) {

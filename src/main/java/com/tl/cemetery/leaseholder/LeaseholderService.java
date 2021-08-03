@@ -39,6 +39,11 @@ public class LeaseholderService {
         return modelMapper.map(leaseholderTemplate, LeaseholderDTO.class);
     }
 
+    public LeaseholderDTO findLeaseholderById(Long id) {
+        Leaseholder leaseholder = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cannot find leaseholder"));
+        return modelMapper.map(leaseholder, LeaseholderDTO.class);
+    }
+
     public List<LeaseholderDTO> listAllLeaseholder(Optional<String> name) {
         return repository.findAll().stream()
                 .filter(l -> name.isEmpty() || l.getName().equalsIgnoreCase(name.get()))
@@ -71,4 +76,5 @@ public class LeaseholderService {
     public void deleteAllLeaseholder() {
         repository.deleteAll();
     }
+
 }
