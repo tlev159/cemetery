@@ -10,8 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,5 +59,57 @@ public class LeaseholderRestTemplateIT {
                 .isEqualTo("Minta Aladár");
     }
 
+    @Test
+    void createMoreLeaseholderAndListAll() {
+
+        GraveDTO graveDTO1 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("B", 1, 4), GraveDTO.class);
+        GraveDTO graveDTO2 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("A", 1, 4), GraveDTO.class);
+        GraveDTO graveDTO3 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("A", 3, 4), GraveDTO.class);
+        GraveDTO graveDTO4 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("B", 2, 4), GraveDTO.class);
+
+        Long id1 = graveDTO1.getId();
+        Long id2 = graveDTO2.getId();
+        Long id3 = graveDTO3.getId();
+        Long id4 = graveDTO4.getId();
+
+        template.postForObject(URL_FOR_LEASEHOLDERS,
+                new CreateLeaseholderCommand("Minta Aladár",
+                        "6543 Kalászpuszta, Kossuth u. 4.", "+36-1/234-5678",
+                        LocalDate.of(2020, 3, 8),
+                        GraveType.STONE, id1), LeaseholderDTO.class);
+        template.postForObject(URL_FOR_LEASEHOLDERS,
+                new CreateLeaseholderCommand("Minta Balázs",
+                        "1357 Pusztaháza, Petőfi u. 4.", "+36-1/111-5678",
+                        LocalDate.of(2020, 3, 8),
+                        GraveType.STONE, id2), LeaseholderDTO.class);
+        template.postForObject(URL_FOR_LEASEHOLDERS,
+                new CreateLeaseholderCommand("Minta Cecília",
+                        "2345 Bélaháza, Molnár u. 34.", "+36-1/222-5678",
+                        LocalDate.of(2020, 3, 8),
+                        GraveType.STONE, id3), LeaseholderDTO.class);
+         template.postForObject(URL_FOR_LEASEHOLDERS,
+                        new CreateLeaseholderCommand("Minta Dezső",
+                                "6727 Szeged, Tisza körút 4.", "+36-1/333-5678",
+                                LocalDate.of(2020, 3, 8),
+                                GraveType.STONE, id4), LeaseholderDTO.class);
+
+        List<LeaseholderDTO> loadedGraveDTOs =
+                template.exchange(URL_FOR_LEASEHOLDERS,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<LeaseholderDTO>>() {
+                        }).getBody();
+
+        System.out.println(loadedGraveDTOs);
+
+        assertThat(loadedGraveDTOs)
+                .hasSize(4)
+                .extracting(LeaseholderDTO::getName)
+                .containsExactly("Minta Aladár", "Minta Balázs", "Minta Cecília", "Minta Dezső");
+    }
 
 }
