@@ -31,11 +31,11 @@ public class Obituary {
     @JoinColumn(name = "grave_id", nullable = false)
     private Grave grave;
 
-    public Obituary(String name, String nameOfMother, LocalDate dateOfBirth, LocalDate dateOfRIP) {
-        this.name = name;
-        this.nameOfMother = nameOfMother;
-        this.dateOfBirth = dateOfBirth;
-        this.dateOfRIP = dateOfRIP;
+    public Obituary(CreateObituaryCommand command) {
+        this.name = command.getName();
+        this.nameOfMother = command.getNameOfMother();
+        this.dateOfBirth = command.getDateOfBirth();
+        this.dateOfRIP = command.getDateOfRIP();
     }
 
 }
