@@ -1,4 +1,4 @@
-package com.tl.cemetery.onituary;
+package com.tl.cemetery.obituary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

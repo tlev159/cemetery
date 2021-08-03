@@ -1,4 +1,4 @@
-package com.tl.cemetery.onituary;
+package com.tl.cemetery.obituary;
 
 import com.tl.cemetery.grave.Grave;
 import lombok.AllArgsConstructor;

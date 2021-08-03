@@ -1,9 +1,8 @@
 package com.tl.cemetery.grave;
 
 import com.tl.cemetery.leaseholder.Leaseholder;
-import com.tl.cemetery.onituary.Obituary;
+import com.tl.cemetery.obituary.Obituary;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;

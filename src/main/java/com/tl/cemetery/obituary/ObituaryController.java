@@ -1,4 +1,4 @@
-package com.tl.cemetery.onituary;
+package com.tl.cemetery.obituary;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
