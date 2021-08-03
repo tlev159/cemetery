@@ -1,0 +1,58 @@
+### create leaseholder
+POST http://localhost:8080/api/leaseholder
+Content-Type: application/json
+
+{
+  "name": "Minta Balázs",
+  "address": "6100 Mintafalva, Muster u. 13.",
+  "telephone": "+36-12/345-6789",
+  "leasedAt": "2020-01-01",
+  "type": "STONE",
+  "graveId": 1
+}
+
+### create another leaseholder
+POST http://localhost:8080/api/leaseholder
+Content-Type: application/json
+
+{
+  "name": "Minta Aladár",
+  "address": "6101 Musterdorf, Mister u. 13.",
+  "telephone": "+36-12/345-9876",
+  "leasedAt": "2020-01-04",
+  "type": "SIMPLE",
+  "graveId": 2
+}
+
+### create another leaseholder with the same datas
+### to proof that it will not saved into the database
+POST http://localhost:8080/api/leaseholder
+Content-Type: application/json
+
+{
+  "name": "Minta Aladár",
+  "address": "6101 Musterdorf, Mister u. 13.",
+  "telephone": "+36-12/345-9876",
+  "leasedAt": "2020-01-04",
+  "type": "SIMPLE",
+  "graveId": 2
+}
+
+### list all leaseholder
+GET http://localhost:8080/api/leaseholder
+Accept: application/json
+
+### update keaseholder datas
+POST http://localhost:8080/api/leaseholder
+Content-Type: application/json
+
+{
+  "name": "Minta Cecília",
+  "address": "1016 Musterdirf, Main u. 13.",
+  "telephone": "+36-12/555-5555",
+  "leasedAt": "2020-03-04",
+  "type": "MARBLE",
+  "graveId": 2
+}
+
+###
