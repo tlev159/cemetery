@@ -7,6 +7,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class LeaseholderService {
@@ -26,5 +30,11 @@ public class LeaseholderService {
         }
         leaseholderTemlpate.addGrave(graveTemplate);
         return modelMapper.map(leaseholderTemlpate, LeaseholderDTO.class);
+    }
+
+    public List<LeaseholderDTO> listAllLeaseholder(Optional<String> name) {
+        return repository.findAll().stream()
+                .filter(l -> name.isEmpty() || l.getName().equalsIgnoreCase(name.get()))
+                .map(l -> modelMapper.map(l, LeaseholderDTO.class)).collect(Collectors.toList());
     }
 }
