@@ -21,13 +21,16 @@ public class Obituary {
 
     private String name;
 
+    @Column(nullable = false)
     private String nameOfMother;
 
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
 
+    @Column(name = "date_of_rip", nullable = false)
     private LocalDate dateOfRIP;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "grave_id", nullable = false)
     private Grave grave;
 

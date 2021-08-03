@@ -24,7 +24,6 @@ public class ObituaryService {
             && o.getNameOfMother().equalsIgnoreCase(command.getNameOfMother())
             && o.getDateOfBirth().equals(command.getDateOfBirth()))) {
             repository.save(obituaryTemplate);
-            obituaryTemplate.setGrave(graveTemplate);
         }
         graveTemplate.addObituary(obituaryTemplate);
         return modelMapper.map(obituaryTemplate, ObituaryDTO.class);

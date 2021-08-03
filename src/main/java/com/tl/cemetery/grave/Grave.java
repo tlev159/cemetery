@@ -3,6 +3,7 @@ package com.tl.cemetery.grave;
 import com.tl.cemetery.leaseholder.Leaseholder;
 import com.tl.cemetery.obituary.Obituary;
 import lombok.*;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -38,8 +39,8 @@ public class Grave {
     @OneToOne(mappedBy = "grave")
     private Leaseholder leaseholder;
 
-    @OneToMany(mappedBy = "grave")
-    private List<Obituary> obituaries;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "grave")
+    private List<Obituary> obituaries = new ArrayList<>();
 
     public Grave(String name, int row, int column) {
         this.name = name;
@@ -54,12 +55,7 @@ public class Grave {
         leaseholder.setGrave(this);
     }
 
-
-
     public void addObituary(Obituary obituary) {
-        if (obituaries == null) {
-            obituaries = new ArrayList<>();
-        }
         obituaries.add(obituary);
         obituary.setGrave(this);
     }
