@@ -55,11 +55,14 @@ public class Grave {
         leaseholder.setGrave(this);
     }
 
-    public void addObituaries(Obituary obituary) {
+
+
+    public void addObituary(Obituary obituary) {
         if (obituaries == null) {
             obituaries = new ArrayList<>();
         }
         obituaries.add(obituary);
+        obituary.setGrave(this);
     }
 }
 
