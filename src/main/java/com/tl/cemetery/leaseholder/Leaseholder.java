@@ -21,6 +21,7 @@ public class Leaseholder {
     private Long id;
 
     @Column(name = "leaseholder_name", nullable = false, length = 200)
+    @OrderBy
     private String name;
 
     @Column(nullable = true)
