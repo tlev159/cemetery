@@ -36,7 +36,6 @@ public class UpdateObituaryCommand {
     private LocalDate dateOfRIP;
 
     @NotNull
-    @NotEmpty
     @Schema(name = "add grave id", example = "3")
     private Long graveId;
 }
