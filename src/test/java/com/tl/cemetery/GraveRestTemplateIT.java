@@ -3,6 +3,8 @@ package com.tl.cemetery;
 import com.tl.cemetery.grave.CreateGraveCommand;
 import com.tl.cemetery.grave.GraveDTO;
 import com.tl.cemetery.grave.UpdateGraveCommand;
+import com.tl.cemetery.obituary.CreateObituaryCommand;
+import com.tl.cemetery.obituary.ObituaryDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,12 +26,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GraveRestTemplateIT {
 
     private final String URL_FOR_QUERY = "/api/graves";
+    private final String URL_FOR_OBITUARIES = "/api/obituaries";
 
     @Autowired
     TestRestTemplate template;
 
     @BeforeEach
     void init() {
+
+        template.delete(URL_FOR_OBITUARIES);
         template.delete(URL_FOR_QUERY);
     }
 
@@ -85,6 +91,52 @@ public class GraveRestTemplateIT {
     }
 
     @Test
+    void createGraveAndMoreObituariesThenListByGrave() {
+
+        GraveDTO graveDTO1 =
+        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 2, 4), GraveDTO.class);
+
+        GraveDTO graveDTO2 =
+                template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("A", 3, 3), GraveDTO.class);
+
+        Long id1 = graveDTO1.getId();
+        Long id2 = graveDTO2.getId();
+
+        template.postForObject(URL_FOR_OBITUARIES,
+                new CreateObituaryCommand("Minta Aladár",
+                        "Csendes Ilonka", LocalDate.of(1945, 3, 8),
+                        LocalDate.of(2020, 3, 8), id1),
+                ObituaryDTO.class);
+        template.postForObject(URL_FOR_OBITUARIES,
+                new CreateObituaryCommand("Minta Béla",
+                        "Jane Doe", LocalDate.of(1945, 3, 8),
+                        LocalDate.of(2020, 3, 8), id2),
+                ObituaryDTO.class);
+        template.postForObject(URL_FOR_OBITUARIES,
+                new CreateObituaryCommand("Minta Cecília",
+                        "Hangos Ilonka", LocalDate.of(1945, 3, 8),
+                        LocalDate.of(2020, 3, 8), id1),
+                ObituaryDTO.class);
+        template.postForObject(URL_FOR_OBITUARIES,
+                new CreateObituaryCommand("Minta Dezső",
+                        "Rendes Ilonka", LocalDate.of(1945, 3, 8),
+                        LocalDate.of(2020, 3, 8), id2),
+                ObituaryDTO.class);
+
+        List<ObituaryDTO> loadedObituaryDTOs =
+                template.exchange(URL_FOR_QUERY + "/obituaries?name=A&row=3&column=3",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<ObituaryDTO>>() {
+                        }).getBody();
+
+        assertThat(loadedObituaryDTOs)
+                .hasSize(2)
+                .extracting(ObituaryDTO::getName)
+                .containsExactly("Minta Béla", "Minta Dezső");
+    }
+
+    @Test
     void createMoreGraveAndListAllInAGivenParcel() {
 
         template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 13, 15), GraveDTO.class);
@@ -112,7 +164,7 @@ public class GraveRestTemplateIT {
     void createTwoGraveThenDeleteById() {
 
         GraveDTO graveDTO =
-        template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 13, 15), GraveDTO.class);
+                template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("B", 13, 15), GraveDTO.class);
 
         template.postForObject(URL_FOR_QUERY, new CreateGraveCommand("A", 5, 4), GraveDTO.class);
 
@@ -152,7 +204,7 @@ public class GraveRestTemplateIT {
     @Test
     void NotFoundGraveException4xx() {
 
-        Problem result = template.getForObject(URL_FOR_QUERY +"/999", Problem.class);
+        Problem result = template.getForObject(URL_FOR_QUERY + "/999", Problem.class);
 
         assertEquals(Status.NOT_FOUND, result.getStatus());
         assertEquals(URI.create("grave/grave-not-found"), result.getType());
