@@ -1,5 +1,7 @@
 package com.tl.cemetery.grave;
 
+import com.tl.cemetery.obituary.ObituaryDTO;
+import com.tl.cemetery.obituary.ObituaryRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ public class GraveService {
     private ModelMapper modelMapper;
 
     private GraveRepository repository;
+    private ObituaryRepository obituaryRepository;
 
     public GraveDTO createGrave(CreateGraveCommand command) {
         Grave graveTemplate = new Grave(command.getName(), command.getRow(), command.getColumn());
@@ -54,6 +57,15 @@ public class GraveService {
         return modelMapper.map(loadedGrave, GraveDTO.class);
     }
 
+    @Transactional
+    public List<ObituaryDTO> listAllObituariesInGrave(FindObituariesInGraveCommand command) {
+        String name = command.getName();
+        int row = command.getRow();
+        int column = command.getColumn();
+        Grave grave = repository.findGraveByCommand(name, row, column);
+        Long graveId = grave.getId();
+        return obituaryRepository.findAllInGraveWithGraveId(graveId).stream().map(o -> modelMapper.map(o, ObituaryDTO.class)).collect(Collectors.toList());
+    }
     public void deleteAllFromGraves() {
         repository.deleteAll();
     }
