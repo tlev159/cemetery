@@ -15,11 +15,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ObituaryRestTemplateIT {
@@ -182,4 +185,24 @@ public class ObituaryRestTemplateIT {
                 .extracting(ObituaryDTO::getName)
                 .containsExactly("Minta Aladár");
     }
+
+    @Test
+    void createWithEmptyNameOfMother() {
+
+        GraveDTO graveDTO =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("B", 2, 4), GraveDTO.class);
+
+        Long graveForId = graveDTO.getId();
+
+        Problem result =
+                template.postForObject(URL_FOR_OBITUARIES,
+                        new CreateObituaryCommand("Minta Aladár",
+                                "", LocalDate.of(1945, 3, 8),
+                                LocalDate.of(2020, 3, 8), graveForId),
+                        Problem.class);
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+    }
+
+
 }
