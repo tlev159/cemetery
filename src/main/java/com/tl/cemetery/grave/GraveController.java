@@ -67,8 +67,8 @@ public class GraveController {
 
     @GetMapping("/obituaries")
     @Operation(summary = "List all obituaries in a grave by name, row, column", description = "List all obituaries in a grave by name, row, column")
-    public List<ObituaryDTO> listAllObituariesInGrave(@Valid @RequestBody FindObituariesInGraveCommand command) {
-        return service.listAllObituariesInGrave(command);
+    public List<ObituaryDTO> listAllObituariesInGrave(@RequestParam String name, @RequestParam int row, @RequestParam int column) {
+        return service.listAllObituariesInGrave(name, row, column);
     }
 
     @DeleteMapping("/{id}")
