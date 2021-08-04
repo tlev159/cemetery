@@ -13,9 +13,9 @@ POST http://localhost:8080/api/graves
 Content-Type: application/json
 
 {
-  "name": "N",
-  "row": 12,
-  "column": 2
+  "name": "A",
+  "row": 3,
+  "column": 3
 }
 
 ### find grave by id
@@ -56,3 +56,9 @@ Content-Type: application/json
   "row": 1235,
   "column": 999
 }
+
+### select graves in a parcel with the given name and in the given row
+GET http://localhost:8080/api/graves/obituaries?name=A&row=3&column=3
+Accept: application/json
+
+###
