@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,12 @@ public class ObituaryController {
     @Operation(summary = "List all obituaries with given name")
     public List<ObituaryDTO> listAllObituariesOptionalByName(@RequestParam Optional<String> name) {
         return service.findAllByName(name);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update obituary data by id")
+    public ObituaryDTO updateObituary(@PathVariable("id") Long id, @Valid @RequestBody UpdateObituaryCommand command) {
+        return service.updateObituary(id, command);
     }
 
     @DeleteMapping

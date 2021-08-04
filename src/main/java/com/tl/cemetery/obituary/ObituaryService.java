@@ -44,4 +44,24 @@ public class ObituaryService {
     public void deleteAllObituaries() {
         repository.deleteAll();
     }
+
+    @Transactional
+    public ObituaryDTO updateObituary(Long id, UpdateObituaryCommand command) {
+        Obituary obituaryTemplate = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Obituary not found!"));
+        Grave graveTemplate = graveRepository.findById(command.getGraveId()).orElseThrow(() -> new IllegalArgumentException("Grave not found"));
+        setArgumentsForObituary(command, obituaryTemplate, graveTemplate);
+        graveTemplate.addObituary(obituaryTemplate);
+        repository.save(obituaryTemplate);
+        return modelMapper.map(obituaryTemplate, ObituaryDTO.class);
+    }
+
+    private void setArgumentsForObituary(UpdateObituaryCommand command, Obituary obituary, Grave grave) {
+        obituary.setName(command.getName());
+        obituary.setNameOfMother(command.getNameOfMother());
+        obituary.setDateOfBirth(command.getDateOfBirth());
+        obituary.setDateOfRIP(command.getDateOfRIP());
+        obituary.setGrave(grave);
+    }
+
+
 }
