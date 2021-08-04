@@ -12,19 +12,20 @@ eltemetett elhunytak adatainak nyilvántartása
 
 A következők megvalósítása szükséges:
 
-- három tábla létrehozása, melyek közül egymással egy-több kapcsolattal
+- három tábla létrehozása, melyekben egymással egy-egy, valamint egy-több kapcsolattal
   rendelkeznek
   (egy parcellának egy bérlője lehet, és egy sírban több elhunyt is el
   lehet temetve);
 
 - táblák nevei rendre:
-  parcellák (graves); sír megváltója (leaseholders), elhunytak (obituaries);
+  parcellák (graves); sír megváltója/bérlője (leaseholders), elhunytak (obituaries);
 
 Feltételek az egyes táblákkal kapcsolatban:
 
 - parcellák:
     - a parcellák nevei egy karakteres betűk (nem lehetnek üresek és maximum 3 karakterből állhatnak)
     - a sor és oszlop adatok nem lehetnek üresek és maximum három számjegyből állhatnak
+    
 
 - bérlők (sír megváltóinak adatai):
     - név (nem lehet üres, maximum 200 karakter)
@@ -37,60 +38,81 @@ Feltételek az egyes táblákkal kapcsolatban:
     - név (nem lehet üres, maximum 200 karakter)
     - édesanyja neve (nem lehet üres, maximum 200 karakter)
     - születési dátum (nem lehet üres)
-    - temetés dátuma (nem lehet üres és nem lehet korábbi a pillanatnyi dátumtól, mivel utólagos rögzítés történik)
+    - temetés dátuma (nem lehet üres)
 
 A nyilvántartandó adatokkal a következőket lehet megvalósítani:
 
-- PARCELLÁK (végpontja: `/graves`):
+**_- PARCELLÁK (végpontja: `api/graves`):_**
 
-  lehessen:
-    - új parcellákat felvenni, mivel a temető bővítése elképzelhető a jövőben
-    - lekérni a temetőben lévő teljes parcellalistát (opcióként egy bizonyos parcella listáját sorokkal, oszlopokkal)
-    - az adatait módosítani
-    - egy konkrét sírt törölni
-    - az összeset törölni
+  
 
-- BÉRLŐK (végpontja: `/leaseholders`):
+    `POST:` - új sír felvétele (mivel a temető bővítése elképzelhető a jövőben);
+    
+    `PUT` (`/{id}` végponttal): - a sír adatainak módosítása azonosító alapján;
+    
+    `GET`: le lehet kérni a temetőben lévő teljes parcellalistát;
 
-  lehessen:
-    - új bérlőt felvenni
-    - a bérlőket listázni
-    - egy konkrét bérlőre rákeresni
-    - a bérlő adatait módosítani
-    - egy bérlőt törölni
-    - az összse bérlőt törölni
+    `GET`(`/{id}` végponttal): id alapján lekérdezni a sír adatait (név, sor, oszlop);
 
-- ELHUNYTAK (végpontja: `/obituaries`):
+    `GET`(`/parcel` végponttal): le lehet kérni paraméterek alapján (opcióként egy bizonyos parcella listáját, illetve annak maghatározott sorában lévőket);
 
-  lehessen:
-    - új elhunytat felvenni
-    - az elhunytakat listázni
-    - egy konkrét elhunytra rákeresni
-    - az elhunyt adatait módosítani
-    - egy elhunytat törölni
-    - az összes elhunytat törölni
+    `DELETE`(`/{id}` végponttal): id alapján lehet törölni;
 
-## Parcellák - bérlők kapcsolat
+    `DELETE`: az összes sírt lehet törölni.
+
+
+_**- BÉRLŐK (végpontja: `api/leaseholders`):**_
+
+    `POST`: új bérlő felvétele;
+    
+    `PUT` (`/{id}` végponttal): - a bérlő adatainak módosítása azonosító alapján;
+    
+    `GET`: le lehet kérni a temetőben lévő teljes parcellalistát (opcionálisan név alapján);
+
+    `GET`(`/{id}` végponttal): id alapján lekérdezni a bérlő adatait;
+
+    `DELETE`(`/{id}` végponttal): id alapján lehet törölni;
+
+    `DELETE`: az összes bérlőt lehet törölni.
+  
+
+**_- ELHUNYTAK (végpontja: `api/obituaries`):_**
+
+    `POST`: új elhunyt felvétele;
+    
+    `PUT` (`/{id}` végponttal): - a elhunyt adatainak módosítása azonosító alapján;
+    
+    `GET`: le lehet kérni a temetőben lévő teljes elhunytlistát (opcionálisan név alapján);
+
+    `GET`(`/{id}` végponttal): id alapján lekérdezni a elhunyt adatait;
+
+    `DELETE`(`/{id}` végponttal): id alapján lehet törölni;
+
+    `DELETE`: az összes bérlőt lehet törölni.
+  
+
+## Sírok - bérlők kapcsolata
 
 Egy sírt a parcellában meg lehet váltani, vagyis bérlőt lehet hozzárendelni.
-Ezt az `/api/grave/{id}/leaseholder` címen lehet.
-A parcella létrehozásakor a bérlők még üresek.
+Ez a bérlő felvételekor történik a sír `id`-jának megadásával.
 
-## Bérlők - elhunytak kapcsolat
+## Sírok - elhunytak kapcsolata
 
-A bérlő létrehozásakor az elhunytak listája még üres, ezeket később kell felvenni.
-A halottakat az `/api/grave/{id}/obituaries` címen lehet felvenni.
+Az elhunytak felvételekor megadásra kerül a sír azonosítója, ezzel történik a két entitás közötti kapcsolat létrehozása.
 
+## Megvalósítás
 
 Klasszikus háromrétegű alkalmazás, MariaDB adatbázissal, Java Spring backenddel,
 REST webszolgáltatásokkal.
-- Az adatbázis kezelő réteg megvalósítása Spring Data JPA-val (`Repository`)
-- A scriptek Flayway segítségével készülnek verziókövetéssel
-- Az üzleti logikai réteg `@Service` osztályokkal kerül megvalósításra
-- Az teszek integrációs tesztek (TestRestTemplate, szükséges a 80 %-os tesztlefedettség)
-- A Controller réteg megvalósítása a RESTful API implementálására. Az API végpontoknak a `/api` címen kell, hogy elérhetők legyenek
-- Szükséges a hibakezelés valamint a validáció
-- Swagger felületen történő tesz is szükséges
-- HTTP fájl írása a funkciók könnyebb tesztelhetőségéhez
-- Dockerfile is létrehozásra kerül, mivel az alkalmazás később dockerből futtatható kell, hogy legyen
+- Az adatbázis kezelő réteg megvalósítása Spring Data JPA-val `(Repository)`
+- A scriptek Flyway segítségével készültek verziókövetéssel
+- Az üzleti logikai réteg `(Service)` osztályokkal kerül megvalósításra
+- Az teszek integrációs tesztek (TestRestTemplate, a tesztlefedettség 80 és 90 % közötti)
+- A RESTful API implementálása `Controller` réteg megvalósításával történt. Az API végpontok az `/api`,
+  illetve minden entitáshoz a saját műveletekhez tartozó cím tartozik
+- Hibakezelés, valamint a validáció is alkalmazásra  került
+- Swagger felületen történő tesz is megvalósításra került
+- HTTP fájlok mindhárom entitáshoz írásra kerültek a funkciók könnyebb tesztelhetőségéhez
+- Dockerfile is létrehozásra került, hogy az alkalmazás később dockerből futtatható lehessen
+
 
