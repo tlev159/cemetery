@@ -7,6 +7,7 @@ import com.tl.cemetery.leaseholder.CreateLeaseholderCommand;
 import com.tl.cemetery.leaseholder.LeaseholderDTO;
 import com.tl.cemetery.obituary.CreateObituaryCommand;
 import com.tl.cemetery.obituary.ObituaryDTO;
+import com.tl.cemetery.obituary.UpdateObituaryCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +59,38 @@ public class ObituaryRestTemplateIT {
                 .isEqualTo("Minta Aladár");
 
     }
+
+    @Test
+    void createThenUpdateById() {
+
+        GraveDTO graveDTO =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("B", 2, 4), GraveDTO.class);
+
+        Long graveForId = graveDTO.getId();
+
+        ObituaryDTO obituaryDTO =
+                template.postForObject(URL_FOR_OBITUARIES,
+                        new CreateObituaryCommand("Minta Aladár",
+                                "Csendes Ilonka", LocalDate.of(1945, 3, 8),
+                                LocalDate.of(2020, 3, 8), graveForId),
+                        ObituaryDTO.class);
+
+        Long id = obituaryDTO.getId();
+
+        template.put(URL_FOR_OBITUARIES + "/" + id,
+                new UpdateObituaryCommand("Minta Dezső",
+                        "Hangos Ilonka", LocalDate.of(1944, 3, 8),
+                        LocalDate.of(2020, 4, 8), graveForId),
+                ObituaryDTO.class);
+
+        ObituaryDTO loadedObituary =
+                template.getForObject(URL_FOR_OBITUARIES + "/" + id, ObituaryDTO.class);
+
+        assertThat(loadedObituary)
+                .extracting(ObituaryDTO::getName)
+                .isEqualTo("Minta Dezső");
+
+    }
+
+
 }

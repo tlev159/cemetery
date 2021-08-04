@@ -33,9 +33,9 @@ public class LeaseholderService {
         Grave graveTemplate = graveRepository.findById(command.getGraveId()).orElseThrow(() -> new IllegalArgumentException("Grave with id(" + command.getGraveId() + ") not found!"));
         if (repository.findAll().stream().noneMatch(l -> l.getName().equalsIgnoreCase(leaseholderTemplate.getName())
                 && l.getAddress().equalsIgnoreCase(leaseholderTemplate.getAddress()))) {
+            leaseholderTemplate.addGrave(graveTemplate);
             repository.save(leaseholderTemplate);
         }
-        leaseholderTemplate.addGrave(graveTemplate);
         return modelMapper.map(leaseholderTemplate, LeaseholderDTO.class);
     }
 
