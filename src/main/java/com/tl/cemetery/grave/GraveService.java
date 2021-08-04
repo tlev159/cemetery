@@ -1,5 +1,6 @@
 package com.tl.cemetery.grave;
 
+import com.tl.cemetery.obituary.Obituary;
 import com.tl.cemetery.obituary.ObituaryDTO;
 import com.tl.cemetery.obituary.ObituaryRepository;
 import lombok.AllArgsConstructor;
@@ -58,14 +59,11 @@ public class GraveService {
     }
 
     @Transactional
-    public List<ObituaryDTO> listAllObituariesInGrave(FindObituariesInGraveCommand command) {
-        String name = command.getName();
-        int row = command.getRow();
-        int column = command.getColumn();
-        Grave grave = repository.findGraveByCommand(name, row, column);
-        Long graveId = grave.getId();
-        return obituaryRepository.findAllInGraveWithGraveId(graveId).stream().map(o -> modelMapper.map(o, ObituaryDTO.class)).collect(Collectors.toList());
+    public List<ObituaryDTO> listAllObituariesInGrave(String name, int row, int column) {
+        List<Obituary> obituaries = repository.findGraveByCommand(name, row, column);
+        return obituaries.stream().map(o -> modelMapper.map(o, ObituaryDTO.class)).collect(Collectors.toList());
     }
+
     public void deleteAllFromGraves() {
         repository.deleteAll();
     }
