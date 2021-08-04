@@ -182,6 +182,8 @@ public class ObituaryRestTemplateIT {
                         new ParameterizedTypeReference<List<ObituaryDTO>>() {
                         }).getBody();
 
+//        System.out.println(loadedObituaryDTOs);
+
         assertThat(loadedObituaryDTOs)
                 .hasSize(1)
                 .extracting(ObituaryDTO::getName)
