@@ -1,5 +1,6 @@
 package com.tl.cemetery.grave;
 
+import com.tl.cemetery.obituary.ObituaryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -62,6 +63,12 @@ public class GraveController {
     @ApiResponse(responseCode = "404", description = "No one grave was found")
     public List<GraveDTO> listAllGravesInAParcel(@RequestParam String name, Optional<Integer> row) {
         return service.listAllGravesInAParcel(name, row);
+    }
+
+    @GetMapping("/obituaries")
+    @Operation(summary = "List all obituaries in a grave by name, row, column", description = "List all obituaries in a grave by name, row, column")
+    public List<ObituaryDTO> listAllObituariesInGrave(@Valid @RequestBody FindObituariesInGraveCommand command) {
+        return service.listAllObituariesInGrave(command);
     }
 
     @DeleteMapping("/{id}")
