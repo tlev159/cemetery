@@ -3,9 +3,14 @@ package com.tl.cemetery.obituary;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -60,4 +65,18 @@ public class ObituaryController {
         service.deleteAllObituaries();
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Problem> handleNotFound(IllegalArgumentException iae) {
+        Problem problem = Problem.builder()
+                .withType(URI.create("obituary/obituary-not-found"))
+                .withTitle("Obituary not found")
+                .withStatus(Status.NOT_FOUND)
+                .withDetail(iae.getMessage())
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(problem);
+    }
 }
