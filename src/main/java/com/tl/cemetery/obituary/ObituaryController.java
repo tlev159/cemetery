@@ -25,7 +25,7 @@ public class ObituaryController {
     @PostMapping
     @Operation(summary = "Create obituary", description = "Create grave")
     @ResponseStatus(HttpStatus.CREATED)
-    public ObituaryDTO createObituary(@RequestBody CreateObituaryCommand command) {
+    public ObituaryDTO createObituary(@Valid @RequestBody CreateObituaryCommand command) {
         return service.createObituary(command);
     }
 
