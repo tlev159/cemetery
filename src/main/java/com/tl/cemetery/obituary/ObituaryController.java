@@ -41,6 +41,12 @@ public class ObituaryController {
         return service.updateObituary(id, command);
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete obituary by id", description = "Delete obituary by id")
+    public void deleteObituaryById(@PathVariable("id") Long id) {
+        service.deleteById(id);
+    }
+
     @DeleteMapping
     @Operation(summary = "Delete all obituaries", description = "Delete all obituaries")
     public void deleteAllObituaries() {
