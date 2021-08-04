@@ -148,6 +148,54 @@ public class ObituaryRestTemplateIT {
     }
 
     @Test
+    void createMoreThenFindByParams() {
+
+        GraveDTO graveDTO1 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("B", 1, 4), GraveDTO.class);
+        GraveDTO graveDTO2 =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("A", 1, 4), GraveDTO.class);
+
+        Long id1 = graveDTO1.getId();
+        Long id2 = graveDTO2.getId();
+
+        template.postForObject(URL_FOR_OBITUARIES,
+                new CreateObituaryCommand("Minta Aladár",
+                        "Csendes Ilonka", LocalDate.of(1945, 3, 8),
+                        LocalDate.of(2020, 3, 8), id1),
+                ObituaryDTO.class);
+        template.postForObject(URL_FOR_OBITUARIES,
+                new CreateObituaryCommand("Minta Béla",
+                        "Jane Doe", LocalDate.of(1945, 3, 8),
+                        LocalDate.of(2020, 3, 8), id2),
+                ObituaryDTO.class);
+        template.postForObject(URL_FOR_OBITUARIES,
+                new CreateObituaryCommand("Minta Cecília",
+                        "Hangos Ilonka", LocalDate.of(1945, 3, 8),
+                        LocalDate.of(2020, 3, 8), id1),
+                ObituaryDTO.class);
+        template.postForObject(URL_FOR_OBITUARIES,
+                new CreateObituaryCommand("Minta Dezső",
+                        "Rendes Ilonka", LocalDate.of(1945, 3, 8),
+                        LocalDate.of(2020, 3, 8), id2),
+                ObituaryDTO.class);
+
+
+        List<ObituaryDTO> loadedObituaryDTOs =
+                template.exchange(URL_FOR_OBITUARIES + "?name=Minta Cecília&nameOfMother=Hangos Ilona",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<ObituaryDTO>>() {
+                        }).getBody();
+
+        assertThat(loadedObituaryDTOs)
+                .hasSize(1)
+                .extracting(ObituaryDTO::getName)
+                .containsExactly("Minta Cecília");
+
+    }
+
+
+    @Test
     void createTwoThenDeleteOneThenListAll() {
 
         GraveDTO graveDTO1 =
