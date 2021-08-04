@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -18,10 +19,12 @@ import java.time.LocalDate;
 @Tag(name = "Create obituary", description = "Create obituary")
 public class CreateObituaryCommand {
 
+    @NotBlank
     @Length(min = 5, max = 200)
     @Schema(name = "add obituaries name", example = "Minta Jenő")
     private String name;
 
+    @NotBlank
     @Length(min = 5, max = 200)
     @Schema(name = "add obituaries name of mother", example = "Minta Ilona")
     private String nameOfMother;
@@ -35,7 +38,6 @@ public class CreateObituaryCommand {
     private LocalDate dateOfRIP;
 
     @NotNull
-    @NotEmpty
     @Schema(name = "add grave id", example = "3")
     private Long graveId;
 }
