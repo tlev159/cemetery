@@ -18,6 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -204,7 +205,6 @@ public class ObituaryRestTemplateIT {
         assertEquals(Status.BAD_REQUEST, result.getStatus());
     }
 
-
     @Test
     void createWithEmptyDateOfBirth() {
 
@@ -221,6 +221,16 @@ public class ObituaryRestTemplateIT {
                         Problem.class);
 
         assertEquals(Status.BAD_REQUEST, result.getStatus());
+
+    }
+
+    @Test
+    void NotFoundException() {
+
+        Problem result = template.getForObject(URL_FOR_OBITUARIES + "/999", Problem.class);
+
+        assertEquals(Status.NOT_FOUND, result.getStatus());
+        assertEquals(URI.create("obituary/obituary-not-found"), result.getType());
 
     }
 }
