@@ -7,6 +7,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class ObituaryService {
@@ -33,6 +37,9 @@ public class ObituaryService {
         return modelMapper.map(repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Obituary not found!")), ObituaryDTO.class);
     }
 
+    public List<ObituaryDTO> findAllByName(Optional<String> name) {
+        return repository.findAllOrByName(name).stream().map(o -> modelMapper.map(o, ObituaryDTO.class)).collect(Collectors.toList());
+    }
 
     public void deleteAllObituaries() {
         repository.deleteAll();

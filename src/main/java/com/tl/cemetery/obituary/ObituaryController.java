@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/obituaries")
@@ -23,6 +26,12 @@ public class ObituaryController {
     @Operation(summary = "List obituary by id", description = "List obituary by id")
     public ObituaryDTO findObituaryById(@PathVariable("id") Long id) {
         return service.findObituaryById(id);
+    }
+
+    @GetMapping
+    @Operation(summary = "List all obituaries with given name")
+    public List<ObituaryDTO> listAllObituariesOptionalByName(@RequestParam Optional<String> name) {
+        return service.findAllByName(name);
     }
 
     @DeleteMapping
