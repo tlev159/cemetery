@@ -1,6 +1,6 @@
 package com.tl.cemetery.obituary;
 
-import com.tl.cemetery.grave.Grave;
+import com.tl.cemetery.grave.GraveDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +22,5 @@ public class ObituaryDTO {
 
     private LocalDate dateOfRIP;
 
-    private Grave grave;
+    private GraveDTO grave;
 }
