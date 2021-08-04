@@ -205,4 +205,22 @@ public class ObituaryRestTemplateIT {
     }
 
 
+    @Test
+    void createWithEmptyDateOfBirth() {
+
+        GraveDTO graveDTO =
+                template.postForObject(URL_FOR_GRAVES, new CreateGraveCommand("B", 2, 4), GraveDTO.class);
+
+        Long graveForId = graveDTO.getId();
+
+        Problem result =
+                template.postForObject(URL_FOR_OBITUARIES,
+                        new CreateObituaryCommand("Minta Aladár",
+                                "Csendes Ilonka", null,
+                                LocalDate.of(2020, 3, 8), graveForId),
+                        Problem.class);
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+
+    }
 }
