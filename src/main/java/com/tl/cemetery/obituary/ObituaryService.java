@@ -39,7 +39,9 @@ public class ObituaryService {
     }
 
     public List<ObituaryDTO> findAllByName(Optional<String> name) {
-        return repository.findAllOrByName(name).stream().map(o -> modelMapper.map(o, ObituaryDTO.class)).collect(Collectors.toList());
+        return repository.findAll().stream()
+                .filter(o -> name.isEmpty() || o.getName().equalsIgnoreCase(name.get()))
+                .map(o -> modelMapper.map(o, ObituaryDTO.class)).collect(Collectors.toList());
     }
 
     @Transactional
