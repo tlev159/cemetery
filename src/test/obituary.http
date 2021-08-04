@@ -1,0 +1,65 @@
+### create obituary
+POST http://localhost:8080/api/obituaries
+Content-Type: application/json
+
+{
+  "name": "Minta Jenő",
+  "nameOfMother": "Mintafalvai Rozália",
+  "dateOfBirth": "1950-06-07",
+  "dateOfRIP": "2021-01-01",
+  "graveId": 1
+}
+
+### create another obituary
+POST http://localhost:8080/api/obituaries
+Content-Type: application/json
+
+{
+  "name": "Minta János",
+  "nameOfMother": "Mintafalvai Rozália",
+  "dateOfBirth": "1950-06-08",
+  "dateOfRIP": "2021-01-01",
+  "graveId": 1
+}
+
+### create another obituary with other data of birth
+POST http://localhost:8080/api/obituaries
+Content-Type: application/json
+
+{
+  "name": "Minta2 János",
+  "nameOfMother": "Mintafalvai Rozália",
+  "dateOfBirth": "1959-07-09",
+  "dateOfRIP": "2021-01-01",
+  "graveId": 2
+}
+
+### create another obituary
+POST http://localhost:8080/api/obituaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Minta2 József",
+  "nameOfMother": "Mintafalvai Rozália",
+  "dateOfBirth": "1950-06-07",
+  "dateOfRIP": "2021-01-01",
+  "graveId": 2
+}
+### create another obituary with the same datas
+### to proof that it will not saved into the database
+POST http://localhost:8080/api/obituaries
+Content-Type: application/json
+
+{
+  "name": "Minta Aladár",
+  "address": "6101 Musterdorf, Mister u. 13.",
+  "telephone": "+36-12/345-9876",
+  "leasedAt": "2020-01-04",
+  "type": "SIMPLE",
+  "graveId": 2
+}
+
+### list all obituaries
+GET http://localhost:8080/api/obituaries
+Accept: application/json
