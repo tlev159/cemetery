@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,6 +58,14 @@ public class ObituaryService {
         obituary.setDateOfBirth(command.getDateOfBirth());
         obituary.setDateOfRIP(command.getDateOfRIP());
         obituary.setGrave(grave);
+    }
+
+    public List<ObituaryDTO> findByNameNameOfMotherAndDataOfBirth(Optional<String> name, Optional<String> nameOfMother, Optional<LocalDate> dateOfBirth) {
+        return repository.findAll().stream()
+                .filter(o -> name.isEmpty() || o.getName().equalsIgnoreCase(name.get()))
+                .filter(o -> nameOfMother.isEmpty() || o.getNameOfMother().equalsIgnoreCase(nameOfMother.get()))
+                .filter(o -> dateOfBirth.isEmpty() || o.getDateOfBirth().isEqual(dateOfBirth.get()))
+                .map(o -> modelMapper.map(o, ObituaryDTO.class)).collect(Collectors.toList());
     }
 
     public void deleteById(Long id) {

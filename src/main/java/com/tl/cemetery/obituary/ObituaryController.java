@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,12 @@ public class ObituaryController {
     @Operation(summary = "List all obituaries with given name")
     public List<ObituaryDTO> listAllObituariesOptionalByName(@RequestParam Optional<String> name) {
         return service.findAllByName(name);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Find obituaries by name, name of mother or date of birth")
+    public List<ObituaryDTO> findByNameNameOfMotherAndDataOfBirth(@RequestParam Optional<String> name, @RequestParam Optional<String> nameOfMother, @RequestParam Optional<LocalDate> dateOfBirth) {
+        return service.findByNameNameOfMotherAndDataOfBirth(name, nameOfMother, dateOfBirth);
     }
 
     @PutMapping("/{id}")
